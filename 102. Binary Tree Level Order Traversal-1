@@ -1,0 +1,36 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void DFS(TreeNode* root, int dep, vector<vector<int>> &ret){
+        if(!root)
+            return;
+        
+        //the size of ret should be equal to dep. such as level 0 there should have one array to store the first level
+        while(ret.size()<=dep)
+            ret.push_back({});
+        
+        ret[dep].push_back(root->val);
+        
+        DFS(root->left, dep+1, ret);
+        DFS(root->right, dep+1, ret);        
+    }
+    
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> ret;
+        
+        if(!root)
+            return {};
+        
+        DFS(root, 0, ret);
+        
+        return ret;
+    }
+};
