@@ -1,0 +1,60 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        //Using two queue to save parent and its childs
+        //when parent queue is empty, then push the childs`s queue into an array and append to the result vector.
+        queue<TreeNode*> tmp1;
+        queue<TreeNode*> tmp2;
+        vector<vector<int>> ret;
+        
+        if(!root)
+            return{};
+        
+        tmp1.push(root);
+        
+        while(!tmp1.empty() || !tmp2.empty()){
+            vector<int> tmp;
+            
+            //check tmp1 as parent queue and set tmp2 as child queue
+            while(!tmp1.empty()){
+                TreeNode *cur= tmp1.front();
+                tmp1.pop();
+                tmp.push_back(cur->val);
+                
+                if(cur->left)
+                    tmp2.push(cur->left);
+                if(cur->right)
+                    tmp2.push(cur->right);
+            }
+            // get the result and continue this loop
+            if(!tmp.empty()){
+                ret.push_back(tmp);
+                continue;
+            }
+            
+            //check tmp2 as parent queue and set tmp1 as child queue
+            while(!tmp2.empty()){
+                TreeNode *cur= tmp2.front();
+                tmp2.pop();
+                tmp.push_back(cur->val);
+                
+                if(cur->left)
+                    tmp1.push(cur->left);
+                if(cur->right)
+                    tmp1.push(cur->right);
+            }
+            if(!tmp.empty())
+                ret.push_back(tmp);
+        }
+        return ret;
+    }
+};
