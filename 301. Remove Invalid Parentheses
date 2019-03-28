@@ -1,0 +1,90 @@
+class Solution {
+public:
+    bool valid(string s){
+        int rmLeft=0;
+        int rmRight=0;
+        
+        for(int i=0;i<s.length();i++){
+            if(s[i]==')' && rmLeft==0){
+                rmRight++;
+                continue;
+            }
+            rmLeft += s[i]=='(';
+            rmLeft -= s[i]==')';
+        }
+        
+        if(rmLeft==0 && rmRight==0)
+            return true;
+        else
+            return false;
+    }
+    
+    void recur(string s, int start, int rmLeft, int rmRight, vector<string> &ret){
+        if(rmLeft==0 && rmRight==0){
+            if(valid(s))
+                ret.push_back(s);
+            return;
+        }
+        
+        for(int i=start; i<s.length();i++){
+            //do not forget to igor the repeated parentheses
+            if(i!=start && s[i-1]==s[i])
+                continue;
+            if(s[i]==')'){
+                if(rmRight>0){
+                    string tmp=s;
+                    tmp.erase(i, 1);
+                    recur(tmp, i, rmLeft, rmRight-1, ret);
+                }
+            }
+            if(s[i]=='('){
+                if(rmLeft>0) {
+                    string tmp=s;
+                    tmp.erase(i, 1);
+                    recur(tmp, i, rmLeft-1, rmRight, ret);
+                }
+            }
+        }
+    }
+    
+    vector<string> removeInvalidParentheses(string s) {
+        /*calculat need to removed parentheses*/
+        int rmLeft=0;
+        int rmRight=0;
+        vector<string> ret;
+        
+        //calculate 
+        for(int i=0;i<s.length();i++){
+            if(s[i]==')' && rmLeft==0){
+                rmRight++;
+                continue;
+            }
+            rmLeft += s[i]=='(';
+            rmLeft -= s[i]==')';
+        }
+        
+        recur(s, 0, rmLeft, rmRight, ret);
+        return ret;
+    }
+};
+
+/*
+recursive to implement this issue.
+1. calculat how many '(' and ')' need to be removed
+        //parentheses are matched and s[i]=')', which means need to remove this ')'
+        if(s[i]==')' and rmLeft ==0)
+            rmRight++;
+            continue;
+        other is easy
+        if(s[i]=='(') rmLeft++;
+        if(s[i]==')') rmLeft--;
+        
+2. recursive remove the parentheses one by one
+
+3. when need to removed parentheses is 0, valid the string, 
+    if yes, push it into the result 
+    if no, return the previous level and check the next parentheses
+    
+4. valid string
+    1. same as calculate rmLeft and rmRight, if both of them are 0, which means it is valid
+*/
