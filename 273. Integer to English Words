@@ -1,0 +1,99 @@
+class Solution {
+public:
+    string numberToWords(int num) {
+        string ret="";
+        unordered_map<int, string> tens_digit;
+        unordered_map<int, string> one_tens_digit;
+        unordered_map<int, string> one_digit;
+        unordered_map<int, string> larismetique;
+        bool igonor_larismetique=1;
+        
+        if(num==0)
+            return "Zero";
+        
+        //save each digit to vector
+        vector<int> digit_vector;
+        
+        one_digit[1]=" One";
+        one_digit[2]=" Two";
+        one_digit[3]=" Three";
+        one_digit[4]=" Four";
+        one_digit[5]=" Five";
+        one_digit[6]=" Six";
+        one_digit[7]=" Seven";
+        one_digit[8]=" Eight";
+        one_digit[9]=" Nine";
+
+        
+        one_tens_digit[0]=" Ten";
+        one_tens_digit[1]=" Eleven";
+        one_tens_digit[2]=" Twelve";
+        one_tens_digit[3]=" Thirteen";
+        one_tens_digit[4]=" Fourteen";
+        one_tens_digit[5]=" Fifteen";
+        one_tens_digit[6]=" Sixteen";
+        one_tens_digit[7]=" Seventeen";
+        one_tens_digit[8]=" Eighteen";
+        one_tens_digit[9]=" Nineteen";
+        tens_digit[2]=" Twenty";
+        tens_digit[3]=" Thirty";
+        tens_digit[4]=" Forty";
+        tens_digit[5]=" Fifty";
+        tens_digit[6]=" Sixty";
+        tens_digit[7]=" Seventy";
+        tens_digit[8]=" Eighty";
+        tens_digit[9]=" Ninety";
+        
+        
+        larismetique[1]=" Thousand";
+        larismetique[2]=" Million";
+        larismetique[3]=" Billion";
+        
+
+        
+        //123 456 789 =>987654321
+        while(num){
+            digit_vector.push_back(num%10);
+            num=num/10;
+        }
+        
+        for(int i=digit_vector.size()-1;i>=0;i--){
+            if(i%3==2 && digit_vector[i] != 0)//hundred digit
+            {
+                ret += one_digit[digit_vector[i]];
+                ret +=" Hundred";
+                igonor_larismetique =0;
+            }
+            else if(i%3==1&&digit_vector[i] !=0){
+                if(digit_vector[i]==1)//ten digit
+                {
+                    ret +=one_tens_digit[digit_vector[i-1]];
+                    i--;
+                }
+                else
+                    ret +=tens_digit[digit_vector[i]];  
+                igonor_larismetique=0;
+            }
+            else if(i%3==0 &&digit_vector[i] !=0){
+                ret +=one_digit[digit_vector[i]];
+                igonor_larismetique=0;
+            }
+            if(i%3==0 && igonor_larismetique ==0){
+                ret +=larismetique[i/3];
+                igonor_larismetique=1;
+            }
+        }
+        ret.erase(0,1);
+        return ret;
+    }
+};
+/*
+1) convert the num into digit and save it into an array
+2) set each three digit as a group
+3) million, billion, thousand for each group and print it as string
+
+2^31=2,137,483,648
+
+
+*/
+
