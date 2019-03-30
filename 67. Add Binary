@@ -1,0 +1,106 @@
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        //revert the string
+        reverse(a.begin(), a.end());
+        reverse(b.begin(), b.end());
+        
+        
+        int n=max(a.length(), b.length());
+        int carry=0;
+        string ret;
+        
+        for(int i=0;i<n;i++){
+            if(i<a.size())  carry+=a[i]-'0';
+            if(i<b.size())  carry+=b[i]-'0';
+            
+            ret.push_back(carry%2+'0');
+            carry=carry/2;            
+        }
+        
+        if(carry)
+            ret.push_back('1');
+        
+        reverse(ret.begin(), ret.end());
+        
+        return ret;
+    }
+};
+
+  /* 道理没错，但是会引起heap-buffer-overflow
+    string addBinary(string a, string b) {
+        string result;
+        string ret;
+        
+        int n= a.length();
+        int m= b.length();
+        
+        int carry_on =0;
+        
+        while(n!=0 && m!=0){
+            if(a[n-1]=='1' && b[m-1]=='1'){
+                if(carry_on){
+                    ret="1";
+                }
+                else
+                    ret="0";
+                
+                carry_on =1;
+            }
+            
+            else if(a[n-1]=='0' && b[n-1]=='0'){
+                if(carry_on)
+                    ret ="1";
+                else
+                    ret ="0";
+                carry_on =0;
+            }
+            else{
+                if(carry_on){
+                    ret="0";
+                    carry_on=1;
+                }
+                else
+                    ret="1";
+            }
+            result.insert(0, ret);
+            n--;
+            m--;
+        }
+        
+        while(n){
+            if(a[n-1]=='1' && carry_on==1){
+                ret="0";
+                carry_on=1;
+            }
+            else if(a[n-1]=='0' && carry_on==0){
+                ret="0";   
+            }    
+            else{
+                ret="1";
+                carry_on=0;
+            }
+            result.insert(0, ret);
+            n--;
+        }
+        while(m){
+             if(b[n-1]=='1' && carry_on==1){
+                ret="0";
+                carry_on=1;
+            }
+            else if(b[n-1]=='0' && carry_on==0){
+                ret="0";   
+            }    
+            else{
+                ret='1';
+                carry_on=0;
+            }
+            result.insert(0, ret);           
+            m--;
+        }
+        if(carry_on)
+            result.insert(0, "1");   
+        return result;
+        
+    }
+    */
