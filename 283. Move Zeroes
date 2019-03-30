@@ -1,0 +1,40 @@
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int zero_index=0;
+        
+        for(int i=0, zero_index=0; i<nums.size();i++){
+            if(nums[i]){
+                swap(nums[i],nums[zero_index]);
+                zero_index++;
+            }
+        }
+    }
+};
+
+
+/*
+这道题不难啊！为何会出现在facebook的面试里面？
+想不明白。
+这道题只要遇到0，然后删除并且在末尾插入一个0就好了。不难的啊？难道这道题有其他的优化？比如不能用删除和插入？
+
+人家有更好的办法
+看完人家的做法才知道自己是如何的愚蠢。
+
+public:
+    void moveZeroes(vector<int>& nums) {
+        int check_size=nums.size();
+        int i=0;
+        
+        while(check_size) {
+            check_size--; 
+            if(nums[i] ==0){
+                nums.erase(nums.begin()+i);
+                nums.push_back(0);
+                continue;
+            }
+            i++;      
+        }
+    }
+};
+*/ 
