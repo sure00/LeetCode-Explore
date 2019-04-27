@@ -1,0 +1,52 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+
+    bool bottom2up(int &ret, TreeNode *root){
+        int retLeft, retRight;
+        if(!root)
+            return true;
+        
+        if(!root->left && !root->right){
+            ret++;
+            return true;
+        }
+        
+        retRight = bottom2up(ret, root->right);
+        retLeft = bottom2up(ret, root->left);
+        
+        if(retLeft && retRight){
+            if(!root->right && root->left->val == root->val){
+                    ret++;
+                    return true;
+            }
+            else if(!root->left && root->right->val == root->val){
+                    ret++;
+                    return true;
+            }
+            else if(root->left && root->right && root->left->val == root->val && root->right->val == root->val) { 
+                ret++;
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    int countUnivalSubtrees(TreeNode* root) {
+        int ret =0;
+        if(!root)
+            return 0;
+            
+        bottom2up(ret, root);
+        
+        return ret;
+    }
+};
