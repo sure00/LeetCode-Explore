@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<int> tmp;
+        
+        for(int i=0;i<tokens.size();i++){
+            if(tmp.size()>=2 && (tokens[i]=="+" ||tokens[i]=="-" ||tokens[i]=="*" ||tokens[i]=="/")){
+                int fst=tmp.top(); tmp.pop();
+                int scd=tmp.top(); tmp.pop();
+                int ret=0;
+                if (tokens[i] == "+")
+                        ret = fst+scd;
+                else if (tokens[i] == "-")
+                        ret = scd-fst;
+                else if (tokens[i] == "*")
+                        ret =fst*scd;
+                else if (tokens[i] == "/")
+                        ret =scd/fst;                  
+                
+                tmp.push(ret);
+            }
+            else
+                tmp.push(std::atoi(tokens[i].c_str()));
+        }
+        return tmp.top();
+    }
+};
