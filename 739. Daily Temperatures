@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& T) {
+        //maintain a decreasing stack
+        //if the temperature greater than the top of stack which means that is what we wanted.
+        //calculate the distance and pop it.
+        //untile the temprature is > = the current temp.
+        int n=T.size();
+        vector<int> ret(n, 0);
+        stack<int> miniStack;
+        
+        for(int i=0;i<n;i++) {
+            while(!miniStack.empty() && T[miniStack.top()] < T[i]){
+                int t=miniStack.top();
+                miniStack.pop();
+                ret[t] = i-t;
+            }
+            miniStack.push(i);
+        }
+        
+        return ret;
+    }
+};
